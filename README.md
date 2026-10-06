@@ -1,147 +1,118 @@
 # Multimedia Analyzer
 
-A Python multimedia lab project containing:
+A Python-based multimedia analysis project developed as an academic project. The project focuses on analyzing image, video, and audio files, performing image enhancement, and exploring voice cloning/synthesis.
 
-1. Image metadata analyzer
-2. Audio metadata analyzer
-3. Video metadata analyzer
-4. Consent-based ElevenLabs voice synthesis using an authorized voice ID
-5. Basic image enhancement
-6. Consolidated automatic file-type detection
-7. JSON report generation
+## Assignment Tasks
 
-## Project structure
+### Task 1 — Image Metadata Analyzer
 
-```text
-multimedia_analyzer/
-├── main.py
-├── file_utils.py
-├── image_analyzer.py
-├── audio_analyzer.py
-├── video_analyzer.py
-├── image_enhancer.py
-├── voice_clone_demo.py
-├── report_generator.py
-├── requirements.txt
-├── .gitignore
-├── samples/
-├── enhanced/
-├── generated_audio/
-└── reports/
-```
+The Image Metadata Analyzer extracts important information from image files, including:
 
-## 1. Create virtual environment
+- File name and file size
+- Image format
+- Width and height
+- Resolution / DPI
+- Color mode
+- EXIF metadata
+- Camera information when available
+- Date taken when available
+- Orientation
+- Software information
 
-Windows:
+**Technology:** Python, Pillow
 
-```powershell
-python -m venv .venv
-.venv\Scripts\activate
-```
+---
 
-Install packages:
+### Task 2 — Video Metadata Analyzer
 
-```powershell
-pip install -r requirements.txt
-```
+The Video Metadata Analyzer extracts technical information from video files, including:
 
-## 2. Image analyzer
+- File name and file size
+- Container format
+- Duration
+- Video resolution
+- Frame rate
+- Video bit rate
+- Video codec
+- Audio codec
+- Audio channels
+- Audio sampling rate
+- Audio bit rate
+- Video metadata
 
-```powershell
-python image_analyzer.py samples\image.jpg
-```
+**Technology:** Python, FFmpeg / FFprobe
 
-Supported:
-JPG/JPEG, PNG, TIFF, WEBP, BMP
+---
 
-## 3. Audio analyzer
+### Task 3 — Audio Metadata Analyzer
 
-```powershell
-python audio_analyzer.py samples\song.mp3
-```
+The Audio Metadata Analyzer extracts information from audio files, including:
 
-## 4. Video analyzer
+- File name and file size
+- Audio format
+- Duration
+- Bit rate
+- Number of channels
+- Sampling rate
+- Embedded metadata
 
-The video analyzer uses FFmpeg's `ffprobe`.
+**Technology:** Python, Mutagen
 
-Check installation:
+---
 
-```powershell
-ffprobe -version
-```
+### Task 4 — Voice Cloning
 
-Then:
+Voice cloning is included as a separate task of the assignment.
 
-```powershell
-python video_analyzer.py samples\video.mp4
-```
+The project contains a voice synthesis demonstration designed to work with an authorized voice.
 
-If Windows says `ffprobe is not recognized`, install FFmpeg and add its `bin` folder to PATH.
+The implementation is kept separate from the multimedia metadata analysis modules.
 
-## 5. Image enhancement
+**Technology:** Python and voice synthesis/cloning technology
 
-Example:
+> Voice cloning should only be performed with appropriate authorization and consent.
 
-```powershell
-python image_enhancer.py samples\image.jpg enhanced\image_enhanced.jpg --scale 1.5
-```
+---
 
-This performs EXIF orientation correction, optional resizing, contrast adjustment and sharpening.
+### Task 5 — Image Enhancement
 
-## 6. Authorized ElevenLabs voice demo
+The Image Enhancement module performs basic image processing operations such as:
 
-Create `.env`:
+- EXIF orientation correction
+- Image resizing
+- Contrast enhancement
+- Sharpness enhancement
+- Unsharp masking
+- Saving the enhanced image as a new file
 
-```text
-ELEVENLABS_API_KEY=your_api_key_here
-AUTHORIZED_VOICE_ID=your_authorized_voice_id
-```
+**Technology:** Python, Pillow
 
-Do not commit `.env` to Git.
+---
 
-Run:
+# Final Integration — Automatic Multimedia Analyzer
 
-```powershell
-python voice_clone_demo.py "Hello, this is my multimedia analyzer project."
-```
+After completing the image, audio, and video metadata analyzers, they are integrated into a single automatic multimedia analyzer.
 
-The voice ID should belong to a voice you are authorized to use. ElevenLabs provides official Python SDK support for text-to-speech and voice cloning.
-
-## 7. Consolidated analyzer
-
-This is the main application:
-
-```powershell
-python main.py samples\image.jpg
-python main.py samples\song.mp3
-python main.py samples\video.mp4
-```
-
-`main.py` calls `file_utils.py` to identify the extension and then routes the file to the correct analyzer.
-
-Every successful analysis is also written to:
+The system automatically identifies the type of input file and selects the appropriate analyzer.
 
 ```text
-reports/report.json
-```
-
-## Git commands
-
-From the project root:
-
-```powershell
-git init
-git add .
-git commit -m "Initial multimedia analyzer project"
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/multimedia-analyzer.git
-git push -u origin main
-```
-
-Before pushing, check:
-
-```powershell
-git status
-```
-
-The `.gitignore` prevents `.env`, generated audio, enhanced images and JSON reports from being committed accidentally.
+                    Input File
+                        |
+                        v
+                File Type Detection
+                        |
+          +-------------+-------------+
+          |             |             |
+          v             v             v
+        Image         Audio         Video
+          |             |             |
+          v             v             v
+       Pillow        Mutagen       FFprobe
+          |             |             |
+          +-------------+-------------+
+                        |
+                        v
+                 Metadata Report
+                        |
+                        v
+                   JSON Report
